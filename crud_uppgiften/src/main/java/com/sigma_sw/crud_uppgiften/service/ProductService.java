@@ -10,8 +10,8 @@ import java.util.List;
 
 public interface ProductService {
 
-    Product addProduct(ProductRequestModel requestModel);
-    ProductResponseModel getProductById(long id);
+    ProductResponseModel addProduct(ProductRequestModel requestModel);
+    ProductResponseModel getProductById(String id);
     List<Product> getAllProducts();
     ProductResponseModel updateProduct(String productId);
     ProductResponseModel deleteProduct(String productId);

@@ -24,12 +24,12 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<Object> createProduct(@RequestBody ProductRequestModel requestModel) {
-        Product savedProduct = productService.addProduct(requestModel);
+        ProductResponseModel responseModel = productService.addProduct(requestModel);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(savedProduct.getId()).toUri();
+                .buildAndExpand(responseModel.getProductId()).toUri();
         return ResponseEntity.created(location).build();
     }
 
@@ -41,7 +41,7 @@ public class ProductController {
     }
 
     @GetMapping("{id}")
-    public ProductResponseModel getProduct(@PathVariable long id) {
+    public ProductResponseModel getProduct(@PathVariable String id) {
         return productService.getProductById(id);
     }
 

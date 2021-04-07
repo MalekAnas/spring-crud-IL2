@@ -10,5 +10,6 @@ public interface ProductRepository extends JpaRepository<Product, Long > {
 
 
 
+    Product getProductByProductId(String id);
 
 }
