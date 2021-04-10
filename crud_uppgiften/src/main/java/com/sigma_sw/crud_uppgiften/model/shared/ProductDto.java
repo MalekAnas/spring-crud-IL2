@@ -1,16 +1,14 @@
 package com.sigma_sw.crud_uppgiften.model.shared;
 
 
-import java.io.Serializable;
-
-public class ProductDto implements Serializable {
+public class ProductDto{
 
 
     private long id;
     private String productId;
     private String name;
-    private String category;
     private int cost;
+    private String category;
 
 
     public long getId() {
@@ -25,8 +23,8 @@ public class ProductDto implements Serializable {
         return productId;
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
+    public void setProductId(String product_id) {
+        this.productId = product_id;
     }
 
     public String getName() {

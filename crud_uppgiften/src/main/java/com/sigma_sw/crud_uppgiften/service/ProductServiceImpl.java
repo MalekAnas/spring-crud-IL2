@@ -7,15 +7,15 @@ import com.sigma_sw.crud_uppgiften.model.product.ProductResponseModel;
 import com.sigma_sw.crud_uppgiften.model.shared.ProductDto;
 import com.sigma_sw.crud_uppgiften.reporsitory.ProductRepository;
 import com.sigma_sw.crud_uppgiften.utils.UIDGenerator;
-import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
 
 
     @Autowired
@@ -38,24 +38,60 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public ProductResponseModel getProductById(String publicID) {
-        Product product=  productRepository.getProductByProductId(publicID);
+        Product product = productRepository.getProductByProductId(publicID);
+        if (product == null)
+            return null;
         ProductResponseModel returnValue = new ProductResponseModel();
         BeanUtils.copyProperties(product, returnValue);
         return returnValue;
     }
 
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductResponseModel> getAllProducts() {
+
+
+        List<Product> products = productRepository.findAll();
+
+        List<ProductResponseModel> returnList = products.stream().map(product -> {
+            ProductResponseModel responseModel = new ProductResponseModel();
+            BeanUtils.copyProperties(product, responseModel);
+            return responseModel;
+        }).collect(Collectors.toList());
+
+        return returnList;
+
     }
 
     @Override
-    public ProductResponseModel updateProduct(String productId) {
-        return null;
+    public ProductResponseModel updateProduct(String id, ProductRequestModel productRequestModel) {
+        Product productToUpdate = productRepository.getProductByProductId(id);
+
+
+        if (productToUpdate == null) {
+            return null;
+        }
+
+
+        ProductDto productDto = new ProductDto();
+        BeanUtils.copyProperties(productRequestModel, productDto);
+        productDto.setProductId(productToUpdate.getProductId());
+        productDto.setId(productToUpdate.getId());
+
+
+        ProductResponseModel productResponseModel = new ProductResponseModel();
+
+        BeanUtils.copyProperties(productDto, productToUpdate);
+        productRepository.save(productToUpdate);
+        BeanUtils.copyProperties(productToUpdate, productResponseModel);
+
+        return productResponseModel;
     }
+
 
     @Override
     public ProductResponseModel deleteProduct(String productId) {
         return null;
     }
+
+
 }

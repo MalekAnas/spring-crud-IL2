@@ -2,10 +2,12 @@ package com.sigma_sw.crud_uppgiften.model.product;
 
 public class ProductResponseModel {
 
+
+    private String productId;
     private String name;
     private int cost;
     private String category;
-    private String productId;
+
 
 
     public String getName() {
@@ -36,7 +38,7 @@ public class ProductResponseModel {
         return productId;
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
+    public void setProductId(String product_id) {
+        this.productId = product_id;
     }
 }
