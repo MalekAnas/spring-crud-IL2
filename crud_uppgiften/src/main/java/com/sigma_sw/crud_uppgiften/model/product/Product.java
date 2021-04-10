@@ -2,6 +2,9 @@ package com.sigma_sw.crud_uppgiften.model.product;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 @Entity(name = "products")
 public class Product {
@@ -18,9 +21,12 @@ public class Product {
     @Column(nullable = false, unique = true)
     private String productId;
     @Column(nullable = false)
+    @Size(min=3, max = 255, message = "Name length is in range (3-255)")
     private String name;
     @Column(nullable = false)
-    private int cost;
+    @NotNull
+    @Positive(message = "Cost must be greater than 0")
+    private double cost;
     @Column(nullable = false)
     private String category;
 
@@ -51,11 +57,11 @@ public class Product {
         this.name = name;
     }
 
-    public int getCost() {
+    public double getCost() {
         return cost;
     }
 
-    public void setCost(int cost) {
+    public void setCost(double cost) {
         this.cost = cost;
     }
 
@@ -68,14 +74,5 @@ public class Product {
     }
 
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", productId='" + productId + '\'' +
-                ", name='" + name + '\'' +
-                ", cost=" + cost +
-                ", category='" + category + '\'' +
-                '}';
-    }
+
 }

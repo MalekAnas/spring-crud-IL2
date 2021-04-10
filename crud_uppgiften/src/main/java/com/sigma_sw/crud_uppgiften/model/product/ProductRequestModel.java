@@ -1,10 +1,18 @@
 package com.sigma_sw.crud_uppgiften.model.product;
 
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
+
 public class ProductRequestModel {
 
+    @Size(min = 3, message = "Name value should be between 3 and 255 letters")
     private String name;
+    @Positive(message = "Cost should be greater than 0")
     private int cost;
+    @NotNull
+    @Size(min = 3, message = "Category value should be between 3 and 255 letters")
     private String category;
 
     public ProductRequestModel(String name, int cost, String category ) {

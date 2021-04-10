@@ -18,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/products")
+@Valid
 public class ProductController {
 
     @Autowired
@@ -35,7 +36,7 @@ public class ProductController {
 
 
     @PostMapping
-    public ResponseEntity<Object> createProduct(@RequestBody ProductRequestModel requestModel) {
+    public ResponseEntity<Object> createProduct(@Valid @RequestBody ProductRequestModel requestModel) {
         ProductResponseModel responseModel = productService.addProduct(requestModel);
 
         URI location = ServletUriComponentsBuilder
@@ -52,23 +53,19 @@ public class ProductController {
     public ResponseEntity<Object> getProduct(@PathVariable String id) {
         ResponseEntity responseEntity ;
         if (productService.getProductById(id)==null){
-             responseEntity = new ResponseEntity<>("Product with ID-"+ id+ " is not found!" , HttpStatus.NOT_FOUND);
-            return  responseEntity;
+             throw new ProductNotFoundException("Product with ID-"+ id+ " is not found!");
         }
         responseEntity = new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
         return responseEntity;
     }
 
 
-    @PostMapping("{id}")
-    public ResponseEntity<Object> updateProduct( @PathVariable String id, @RequestBody ProductRequestModel productRequestModel){
+    @PutMapping("{id}")
+    public ResponseEntity<Object> updateProduct(  @PathVariable String id, @RequestBody @Valid ProductRequestModel productRequestModel){
 
 
         if (productService.updateProduct(id, productRequestModel)==null) {
-            ResponseEntity responseEntity = new ResponseEntity<>(new ProductNotFoundException(
-                    "Product with ID-" + id + " is not found!")
-                    , HttpStatus.NOT_FOUND);
-            return responseEntity;
+           throw new ProductNotFoundException("Product with ID-"+ id+ " is not found!");
         }
         ProductResponseModel responseModel= productService.updateProduct(id, productRequestModel);
 
