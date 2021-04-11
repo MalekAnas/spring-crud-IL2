@@ -16,6 +16,9 @@ import java.util.Date;
 @RestControllerAdvice
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
+
+
+    //handle validation exceptions
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex
@@ -38,6 +41,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    //product not found exception
     @ExceptionHandler(ProductNotFoundException.class)
     public final ResponseEntity<Object> handleProductNotFoundExceptions(Exception exception, WebRequest webRequest) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date()
