@@ -90,7 +90,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponseModel deleteProduct(String productId) {
-        return null;
+
+        Product productToDelete = productRepository.getProductByProductId(productId);
+        if (productToDelete==null)
+            return null;
+
+        productRepository.delete(productToDelete);
+
+
+        return new ProductResponseModel();
+
     }
 
 
